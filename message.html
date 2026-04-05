@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Final Gift 💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Arial;
+  overflow: hidden;
+}
+
+.card {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 85%;
+  max-width: 350px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card h1 {
+  color: #ff4d6d;
+}
+
+.card p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Floating icons */
+.float {
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
+}
+
+/* BUTTON */
+.btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #ff4d6d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>💖 Hyee Raa 💖</h1>
+<h2>To an amazing friend 😊,</h2>
+  <p>
+   
+
+    You are one of the best things that happened to me in my life.
+    Chala cheppali anukunna but em osthale 😂 sare lyt flow lo vellipotha...
+<br>
+    I want to see you happy... not just outside smile 😄 but real happiness.
+    Nuv settle ayyaka tension lekunda unna appudu ah real glow chudali...
+    Waiting abbaaaa ✨
+<br>
+    Manam frnds ga eppativaraku untamo thelidhu but unnanthavaraku
+    I'll cherish every moment with you 💛
+<br>
+    Oorke thagavanuko 😏 malli naku kopam osthadhi...
+    treat ani cheppi mathu mandhu kalipi padestha 😜 careful!
+<br>
+    Sare sarle... Birthday boy 🎉
+    Many more years to go 🥳
+
+    I wish all the luck, success and happiness come your way ✨
+    BYE 🎁😄🤝
+  </p>
+
+  <button class="btn" id="nextBtn" onclick="goNext()">🎉 Next</button>
+</div>
+
+<script>
+// show button after 2 sec
+setTimeout(() => {
+  document.getElementById("nextBtn").style.display = "inline-block";
+}, 2000);
+
+// floating icons
+const icons = ["⭐", "🎈", "😊", "🤝", "🌟"];
+
+function createFloating() {
+  for (let i = 0; i < 12; i++) {
+    let el = document.createElement("div");
+    el.className = "float";
+    el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+    el.style.left = Math.random() * window.innerWidth + "px";
+    el.style.animationDuration = (4 + Math.random() * 4) + "s";
+    document.body.appendChild(el);
+
+    setTimeout(() => el.remove(), 8000);
+  }
+}
+
+setInterval(createFloating, 1200);
+
+// 🔁 NEXT BUTTON FUNCTION (IMPORTANT)
+function goNext() {
+
+  // OPTIONAL: flip all before leaving (cool effect)
+  let cards = document.querySelectorAll(".card");
+  cards.forEach(card => card.classList.add("active"));
+
+  // Wait 1 sec then go back
+  setTimeout(() => {
+    let params = window.location.search;
+    window.location.href = "gift.html" + params;
+  }, 1000);
+}
+
+</script>
+
+</body>
+</html>

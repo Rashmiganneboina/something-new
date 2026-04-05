@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gift Selection</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f1e7;
+  font-family: Arial;
+}
+
+.container { text-align: center; }
+
+.circle {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+/* Gift */
+.gift {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.box {
+  width: 80px;
+  height: 60px;
+  background: #ff4d6d;
+  position: absolute;
+  bottom: 0;
+  border-radius: 5px;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 100%;
+  background: gold;
+  left: 34px;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 12px;
+  background: gold;
+  top: 20px;
+}
+
+.lid {
+  width: 80px;
+  height: 20px;
+  background: #d6336c;
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  transform-origin: bottom;
+}
+
+/* Center gift */
+.gift.active {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.6);
+  z-index: 1000;
+}
+
+.gift.open .lid {
+  transform: rotateX(120deg);
+  transition: 0.6s;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+/* Message */
+.message-box {
+  position: fixed;
+  top: calc(50% + 120px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  top: 0;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ✅ END BUTTON (only added) */
+#endBtn {
+  display: none;
+  position: fixed;
+  bottom: 40px;
+  padding: 12px 25px;
+  font-size: 16px;
+  background: linear-gradient(45deg, #ff4d6d, #ff85a1);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Choose Your Gift 🎁</h1>
+
+  <div class="circle">
+    <div class="gift" onclick="openGift(0)"><div class="lid"></div><div class="box"></div></div>
+    <div class="gift" onclick="openGift(1)"><div class="lid"></div><div class="box"></div></div>
+    <div class="gift" onclick="openGift(2)"><div class="lid"></div><div class="box"></div></div>
+    <div class="gift" onclick="openGift(3)"><div class="lid"></div><div class="box"></div></div>
+    <div class="gift" onclick="openGift(4)"><div class="lid"></div><div class="box"></div></div>
+  </div>
+</div>
+
+<!-- ✅ END BUTTON (only added) -->
+<button id="endBtn" onclick="goFinal()">END 💖</button>
+
+<div class="overlay" id="overlay" onclick="goToGift()"></div>
+<div class="message-box" id="messageBox" onclick="goToGift()"></div>
+
+<script>
+const links = [
+  "grid.html",
+  "video.html?video=s2.mp4",
+  "video.html?video=s3.mp4",
+  "video.html?video=s4.mp4",
+  "message.html"
+];
+
+const messages = [
+  "💖 Yahoo...It's a GRID, click on it",
+  "🍫 It's a REEL, Less go",
+  "😎something I've created, see and tell how it is....",
+  "🎉 A sweet video😊",
+  "✨ A message for you."
+];
+
+let selectedIndex = null;
+
+// GET SELECTED
+function getSelected() {
+  let p = new URLSearchParams(window.location.search);
+  let s = p.get("selected");
+  return s ? s.split(",").map(Number) : [];
+}
+
+// OPEN GIFT
+function openGift(index) {
+  selectedIndex = index;
+
+  let gifts = document.querySelectorAll(".gift");
+
+  gifts.forEach((g,i)=>{
+    if(i!==index) g.style.opacity="0";
+  });
+
+  let gift = gifts[index];
+  gift.classList.add("active");
+
+  setTimeout(()=>{
+    gift.classList.add("open");
+    confetti();
+  },500);
+
+  setTimeout(()=>{
+    document.getElementById("messageBox").innerText = messages[index];
+    document.getElementById("overlay").style.display="block";
+  },1200);
+}
+
+// CONFETTI
+function confetti(){
+  for(let i=0;i<60;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*window.innerWidth+"px";
+    c.style.background=["red","blue","green","yellow"][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+// GO NEXT
+function goToGift(){
+  let selected = getSelected();
+
+  if(!selected.includes(selectedIndex)){
+    selected.push(selectedIndex);
+  }
+
+  let data = selected.join(",");
+
+  if (links[selectedIndex].includes("?")) {
+    window.location.href = links[selectedIndex] + "&selected=" + data;
+  } else {
+    window.location.href = links[selectedIndex] + "?selected=" + data;
+  }
+}
+
+// ARRANGE IN CIRCLE
+function rearrangeGifts() {
+  let gifts = document.querySelectorAll(".gift");
+  gifts = Array.from(gifts).filter(g => g.style.display !== "none");
+
+  let total = gifts.length;
+
+  let radius = 120;
+  let centerX = 160;
+  let centerY = 160;
+
+  gifts.forEach((gift, i) => {
+    let angle = (2 * Math.PI / total) * i;
+
+    let x = centerX + radius * Math.cos(angle) - 40;
+    let y = centerY + radius * Math.sin(angle) - 40;
+
+    gift.style.left = x + "px";
+    gift.style.top = y + "px";
+  });
+}
+
+// ✅ ONLY ADDED LOGIC HERE
+window.onload = function () {
+  let selected = getSelected();
+  let gifts = document.querySelectorAll(".gift");
+
+  selected.forEach(i=>{
+    if(gifts[i]) gifts[i].style.display="none";
+  });
+
+  // show END button if all opened
+  if (selected.length === 5) {
+    document.querySelector(".circle").style.display = "none";
+    document.getElementById("endBtn").style.display = "block";
+    return;
+  }
+
+  rearrangeGifts();
+};
+
+// ✅ FINAL REDIRECT FUNCTION
+function goFinal() {
+  window.location.href = "final.html";
+}
+</script>
+
+</body>
+</html>

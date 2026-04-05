@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fun Page</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    #clickText {
+      font-size: 40px;
+      font-family: 'Pacifico', cursive;
+      color: white;
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+      padding: 15px 30px;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    #clickText:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    #content { display: none; }
+
+    img {
+      width: 220px;
+      margin-top: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    #emoji { font-size: 50px; margin-top: 15px; }
+
+    #text {
+      font-size: 24px;
+      margin-top: 10px;
+      color: #333;
+      min-height: 30px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(45deg, #36d1dc, #5b86e5);
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="clickText" onclick="showContent()">This is for you....</div>
+
+  <div id="content">
+    <img src="cutie.webp" alt="Cute Image">
+    <div id="emoji"></div>
+    <div id="text"></div>
+    <button id="nextBtn" onclick="nextPage()">Next</button>
+  </div>
+
+<script>
+
+  function createCtx() {
+    return new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // ✨ Magical Sparkle — random high glittery pings that shimmer and fade
+  function playMagicalSparkle() {
+    const ctx = createCtx();
+
+    // A burst of 10 random sparkle pings
+    for (let i = 0; i < 10; i++) {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      // Random high frequency for glittery shimmer effect
+      const freq = 1200 + Math.random() * 2000;
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+      // Slight pitch drop for each ping — fairy-dust feel
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + 0.4);
+
+      const start = ctx.currentTime + i * 0.07; // stagger each ping
+      const end   = start + 0.5;
+
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.15, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, end);
+
+      osc.start(start);
+      osc.stop(end);
+    }
+  }
+
+  // ✨ Sparkle tick — tiny fairy ping per typed character
+  function playSparkTick() {
+    const ctx  = createCtx();
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.type = 'sine';
+    const freq = 1500 + Math.random() * 800;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.6, ctx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.1);
+  }
+
+  function showContent() {
+    document.getElementById("clickText").style.display = "none";
+    document.getElementById("content").style.display  = "block";
+
+    playMagicalSparkle(); // ✨ sparkle burst on reveal
+
+    document.getElementById("emoji").innerHTML = "";
+    setTimeout(typeText, 3000);
+  }
+
+  function typeText() {
+    let message = "Cool😎 Let's go!";
+    let i = 0;
+    let speed = 100;
+
+    function typing() {
+      if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        playSparkTick(); // ✨ fairy ping per character
+        i++;
+        setTimeout(typing, speed);
+      } else {
+        document.getElementById("nextBtn").style.display = "inline-block";
+      }
+    }
+
+    typing();
+  }
+
+  function nextPage() {
+    window.location.href = 'gift.html';
+  }
+
+</script>
+
+</body>
+</html>

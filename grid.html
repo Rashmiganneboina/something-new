@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flip Grid</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* GRID */
+.grid {
+  width: 95vw;
+  height: 85vh;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+}
+
+/* CARD */
+.card {
+  perspective: 800px;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.card.active .inner {
+  transform: rotateY(180deg);
+}
+
+.front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ff9ec4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  backface-visibility: hidden;
+}
+
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotateY(180deg);
+  border-radius: 10px;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* NEXT BUTTON */
+button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 }
+</style>
+
+</head>
+
+<body>
+
+<div class="grid" id="grid"></div>
+
+<button onclick="goNext()">Next ➡️</button>
+
+<script>
+const grid = document.getElementById("grid");
+
+// 👉 Your images
+const images = [
+  "img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg","img6.jpg","img7.jpg",
+  "img8.jpg","img9.jpg","img10.jpg","img11.jpg","img12.jpg","img13.jpg","img14.jpg",
+  "img15.jpg","img16.jpg","img17.jpg","img18.jpg","img19.jpg","img20.jpg","img21.jpg",
+  "img22.jpg","img23.jpg","img24.jpg","img25.jpg","img26.jpg","img27.jpg","img28.jpg"
+];
+
+// CREATE CARDS
+for (let i = 0; i < 28; i++) {
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div class="inner">
+      <div class="front">🎁</div>
+      <div class="back">
+        <img src="${images[i] || 'https://via.placeholder.com/150'}">
+      </div>
+    </div>
+  `;
+
+  // Flip on click
+  card.addEventListener("click", () => {
+    card.classList.toggle("active");
+  });
+
+  grid.appendChild(card);
+}
+
+// 🔁 NEXT BUTTON FUNCTION (IMPORTANT)
+function goNext() {
+
+  // OPTIONAL: flip all before leaving (cool effect)
+  let cards = document.querySelectorAll(".card");
+  cards.forEach(card => card.classList.add("active"));
+
+  // Wait 1 sec then go back
+  setTimeout(() => {
+    let params = window.location.search;
+    window.location.href = "gift.html" + params;
+  }, 1000);
+}
+</script>
+
+</body>
+</html>

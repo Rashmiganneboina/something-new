@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interesting Page</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            font-family: Arial, sans-serif;
+
+            /* Center everything */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .hi-container {
+            position: relative;
+        }
+
+        h1 {
+            font-size: 60px;
+            color: lightseagreen;
+            font-style: oblique;
+            margin: 0;
+        }
+
+        .tagline {
+            position: absolute;
+            bottom: -10px;   /* adjust down */
+            right: -120px;   /* adjust right */
+            font-size: 18px;
+            font-style: oblique;
+            color: darkmagenta;
+        }
+
+        /* Next button bottom-right */
+        form {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        input[type="submit"] {
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hi-container">
+        <h1>HI</h1>
+        <span class="tagline">Let's get started</span>
+    </div>
+
+    <form action="next.html">
+        <input type="submit" value="Next">
+    </form>
+
+</body>
+</html>
